@@ -9,7 +9,8 @@
 # create a code that scans qr code
 
 import cv2
-import webbrowser
+# import datetime for data and time
+import datetime
 
 cap = cv2.VideoCapture(0)
 detector = cv2.QRCodeDetector()
@@ -18,12 +19,21 @@ while True:
     data, bbox, _ = detector.detectAndDecode(img)
     if data:
         a = data
-        print(a)
-        break
+
+#create a code that writes the data in the qr code to a text file
+        with open('QrCodeData.txt', mode = 'a') as file:
+            file.write(f'Personal details: \n{a} \nDate and Time %s.' % (datetime.datetime.now())) 
+            file.close
+            break
+            
     cv2.imshow("QRCODEscanner", img)	
     if cv2.waitKey(1) == ord("q"):
 	        break
 
-b=webbrowser.open(str(a))
+
 cap.release()
 cv2.destroyAllWindows()
+
+# try to scan qr code that contains text and save it as a file
+
+print(data)
